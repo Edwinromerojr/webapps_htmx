@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 
+from django.http import HttpResponse
+
 
 def home_view(request, tag=None):
     if tag:
@@ -156,3 +158,16 @@ def reply_delete_view(request, pk):
         return redirect('post', reply.parent_comment.parent_post.id )
 
     return render(request, 'posts/reply_delete.html', {'reply' : reply})
+
+
+def like_post(request, pk):
+    post = get_object_or_404(Post, id=pk)
+    user_exist = post.likes.filter(username=request.user.username).exists()
+
+    if post.author != request.user:
+        if user_exist:
+            post.likes.remove(request.user)
+        else:
+            post.likes.add(request.user)
+
+    return render(request, 'snippets/likes.html', {'post': post})

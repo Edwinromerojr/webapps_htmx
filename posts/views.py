@@ -18,11 +18,8 @@ def home_view(request, tag=None):
     else:
         posts = Post.objects.all()
 
-    categories = Tag.objects.all()
-
     context = {
         'posts': posts,
-        'categories': categories,
         'tag': tag,
     }
     return render(request, 'posts/home.html', context)

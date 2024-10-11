@@ -5,7 +5,9 @@ from django.http import Http404
 from django.contrib.auth import logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 
+from posts.forms import ReplyCreateForm
 from .forms import ProfileForm
 
 def profile_view(request, username=None):
@@ -17,8 +19,22 @@ def profile_view(request, username=None):
         except:
             raise Http404()
 
+    posts = profile.user.posts.all()
+
+    if request.htmx:
+        if 'top-posts' in request.GET:
+            posts = profile.user.posts.annotate(num_likes=Count('likes')).filter(num_likes__gt=0).order_by('-num_likes')
+        elif 'top-comments' in request.GET:
+            comments = profile.user.comments.annotate(num_likes=Count('likes')).filter(num_likes__gt=0).order_by('-num_likes')
+            replyform = ReplyCreateForm()
+            return render(request, 'snippets/loop_profile_comments.html', { 'comments': comments, 'replyform': replyform })
+        elif 'liked-posts' in request.GET:
+            posts = profile.user.likedposts.order_by('-likedpost__created')
+        return render(request, 'snippets/loop_profile_posts.html', { 'posts': posts })
+
     context = {
         'profile' : profile,
+        'posts': posts,
     }
     return render(request, 'users/profile.html', context)
 

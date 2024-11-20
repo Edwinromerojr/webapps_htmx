@@ -186,7 +186,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 ACCOUNT_SIGNUP_REDIRECT_URL = "profile-onboarding"
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_HOST_USER = env('EMAIL_ADDRESS')
+    EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+    DEFAULT_FROM_EMAIL = 'Awesome'
+    ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 

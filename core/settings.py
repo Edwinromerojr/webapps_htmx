@@ -53,18 +53,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'cloudinary_storage',
     'cloudinary',
     'admin_honeypot',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
     'django_cleanup.apps.CleanupConfig',
     "django_htmx",
     'posts',
     'users',
     'inbox',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -193,7 +195,7 @@ if ENVIRONMENT == 'production' or POSTGRES_LOCALLY == True:
     EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
-    DEFAULT_FROM_EMAIL = 'Awesome'
+    DEFAULT_FROM_EMAIL = f'Awesome {env("EMAIL_ADDRESS")}'
     ACCOUNT_EMAIL_SUBJECT_PREFIX = ''
 else:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

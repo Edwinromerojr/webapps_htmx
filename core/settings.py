@@ -18,6 +18,10 @@ env = Env()
 Env.read_env()
 ENVIRONMENT = env('ENVIRONMENT', default='production')
 
+# Feature Toggle
+DEVELOPER = env('DEVELOPER', default='')
+STAGING = env('STAGING', default='False')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -64,6 +68,7 @@ INSTALLED_APPS = [
     'posts',
     'users',
     'inbox',
+    'features',
 ]
 
 SITE_ID = 1

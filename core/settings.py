@@ -40,7 +40,9 @@ if ENVIRONMENT == 'development':
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'webapps-htmx-staging.onrender.com', 'webapps-htmx.onrender.com'] #add domain name
+
+CSRF_TRUSTED_ORIGINS = [ 'https://*.onrender.com' ] #add domain name
 
 INTERNAL_IPS = (
     '127.0.0.1',

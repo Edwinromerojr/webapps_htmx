@@ -18,6 +18,10 @@ env = Env()
 Env.read_env()
 ENVIRONMENT = env('ENVIRONMENT', default='production')
 
+# Feature Toggle
+DEVELOPER = env('DEVELOPER', default='')
+STAGING = env('STAGING', default='False')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -36,7 +40,9 @@ if ENVIRONMENT == 'development':
 else:
     DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'webapps-htmx-staging.onrender.com', 'webapps-htmx.onrender.com'] #add domain name
+
+CSRF_TRUSTED_ORIGINS = [ 'https://*.onrender.com' ] #add domain name
 
 INTERNAL_IPS = (
     '127.0.0.1',
@@ -64,6 +70,8 @@ INSTALLED_APPS = [
     'posts',
     'users',
     'inbox',
+    'features',
+    'landingpages',
 ]
 
 SITE_ID = 1
@@ -79,6 +87,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "allauth.account.middleware.AccountMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
+    'landingpages.middleware.landingpage_middleware',
 ]
 
 ROOT_URLCONF = 'core.urls'

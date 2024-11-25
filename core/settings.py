@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'users',
     'inbox',
     'features',
+    'landingpages',
 ]
 
 SITE_ID = 1
@@ -84,6 +85,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "allauth.account.middleware.AccountMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
+    'landingpages.middleware.landingpage_middleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
